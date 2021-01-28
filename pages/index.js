@@ -1,65 +1,74 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import React, { useState, useEffect } from 'react';
+import Head from 'next/head';
+import '../styles/main.css';
+
+// Utils
+import { EventBus, defaultPlace, auth, logout } from '../utils';
+
+// Components
+import Nav from '../components/Nav';
+import PlacePicker from '../components/PlacePicker';
+import WantToGo from '../components/WantToGo';
+import AuthForm from '../components/AuthForm';
 
 export default function Home() {
+  const [isModalShown, setIsModalShown] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [authModalShown, setAuthModalShown] = useState(false);
+  const [authed, setAuthed] = useState(false);
+  // const [placeToEdit, setPlaceToEdit] = useState(defaultPlace);
+
+  useEffect(() => {
+    auth.onAuthStateChanged(user => setAuthed(!!user));
+  }, []);
+
+  const openModal = (place = defaultPlace) => {
+    document.body.classList.add('freeze');
+    setPlaceToEdit(place);
+    setIsModalShown(true);
+  };
+
+  const closeModal = () => {
+    document.body.classList.remove('freeze');
+    setIsModalShown(false);
+  };
+
+  EventBus.on('addPlace', () => {
+    if (authed) {
+      setIsEditing(false);
+      openModal();
+    } else {
+      setAuthModalShown(true);
+    }
+  });
+
+  EventBus.on('editPlace', place => {
+    setIsEditing(true);
+    openModal(place);
+  });
+
+  EventBus.on('login', () => {
+    closeModal();
+    setAuthModalShown(true);
+  });
+
+  EventBus.on('closePlaceModal', () => closeModal());
+  EventBus.on('closeAuthModal', () => setAuthModalShown(false));
+  EventBus.on('logout', async () => await logout());
+
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>Time to have fun</title>
       </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
+      <Nav authed={authed} />
+      <div className="container mx-auto px-4 pt-20">
+        {authModalShown && <AuthForm />}
+        
+        <PlacePicker />
+        
+        <WantToGo />
+      </div>
     </div>
   )
 }
