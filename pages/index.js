@@ -6,17 +6,12 @@ import '../styles/main.css';
 import { EventBus, defaultPlace, auth, logout } from '../utils';
 
 // Components
-import Nav from '../components/Nav';
-import PlacePicker from '../components/PlacePicker';
-import WantToGo from '../components/WantToGo';
-import AuthForm from '../components/AuthForm';
+import { Nav, WantToGo, PlacePicker, PlaceForm, AuthForm} from '../components';
 
 export default function Home() {
   const [isModalShown, setIsModalShown] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
   const [authModalShown, setAuthModalShown] = useState(false);
   const [authed, setAuthed] = useState(false);
-  // const [placeToEdit, setPlaceToEdit] = useState(defaultPlace);
 
   useEffect(() => {
     auth.onAuthStateChanged(user => setAuthed(!!user));
@@ -24,7 +19,7 @@ export default function Home() {
 
   const openModal = (place = defaultPlace) => {
     document.body.classList.add('freeze');
-    setPlaceToEdit(place);
+    // setPlaceToEdit(place);
     setIsModalShown(true);
   };
 
@@ -35,20 +30,16 @@ export default function Home() {
 
   EventBus.on('addPlace', () => {
     if (authed) {
-      setIsEditing(false);
       openModal();
     } else {
       setAuthModalShown(true);
     }
   });
 
-  EventBus.on('editPlace', place => {
-    setIsEditing(true);
-    openModal(place);
-  });
 
   EventBus.on('login', () => {
     closeModal();
+    // setAuthed(true);
     setAuthModalShown(true);
   });
 
@@ -64,7 +55,11 @@ export default function Home() {
       <Nav authed={authed} />
       <div className="container mx-auto px-4 pt-20">
         {authModalShown && <AuthForm />}
-        
+
+        {isModalShown && (
+          <PlaceForm authed={authed} />
+        )}
+
         <PlacePicker />
         
         <WantToGo />

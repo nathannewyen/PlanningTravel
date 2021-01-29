@@ -18,7 +18,7 @@ const AuthForm = () => {
 
   const closeModal = () => EventBus.emit('closeAuthModal');
 
-  const onSubmit = async e => {
+    const onSubmit = async e => {
     e.preventDefault();
 
     try {
@@ -74,7 +74,7 @@ const AuthForm = () => {
 
             <div className="flex items-center justify-between">
               <button
-                className="inline-flex items-center px-4 py-2 rounded shadow bg-teal-500 hover:bg-teal-400 hover:shadow-lg focus:outline-none focus:bg-teal-400 text-white font-small tracking-wide"
+                className="inline-flex items-center px-4 py-2 rounded shadow bg-green-500 hover:bg-green-400 hover:shadow-lg focus:outline-none focus:bg-green-400 text-white font-small tracking-wide"
                 type="submit">
                 Login
               </button>

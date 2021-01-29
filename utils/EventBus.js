@@ -2,7 +2,6 @@ const EventBus = {
     events: {},
     emit(event, data) {
       if (!this.events[event]) {
-        console.log("worked");
         return;
       }
         this.events[event].forEach(callback => callback(data));
