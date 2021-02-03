@@ -39,7 +39,6 @@ export default function Home() {
 
   EventBus.on('login', () => {
     closeModal();
-    // setAuthed(true);
     setAuthModalShown(true);
   });
 

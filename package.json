@@ -19,5 +19,11 @@
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2"
+  },
+  "devDependencies": {
+    "@upstatement/prettier-config": "^0.3.0",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "prettier": "^2.2.1"
   }
 }
