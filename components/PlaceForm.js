@@ -7,8 +7,6 @@ const PlaceForm = ({ isEditing, placeToEdit, authed }) => {
   const [isErrorShown, setIsErrorShown] = useState(false);
   const [inputs, setInputs] = useState(placeToEdit);
 
-  console.log(authed);
-
   const handleChange = e => {
     e.persist();
 

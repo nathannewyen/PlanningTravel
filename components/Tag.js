@@ -15,7 +15,8 @@ const Tag = ({ tag, isFlight }) => (
       />
     </svg>
     <span>
-      Flight
+      {tag}
+      {isFlight && ' Flight'}
     </span>
   </span>
 );

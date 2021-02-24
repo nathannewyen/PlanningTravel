@@ -4,12 +4,12 @@ import 'firebase/firestore';
 import 'firebase/auth';
 
 const firebaseConfig = {
-    apiKey: "AIzaSyA68kU1pLrwHL0sPB0NKNnA0cPTSVHfg3M",
+    apiKey: process.env.FIREBASE_API_KEY,
     authDomain: "travel-more-fun.firebaseapp.com",
     projectId: "travel-more-fun",
     storageBucket: "travel-more-fun.appspot.com",
-    messagingSenderId: "778344277150",
-    appId: "1:778344277150:web:16eb41a756ed1ad207478f",
+    messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.FIREBASE_APP_ID,
     measurementId: "G-LYTN488C7C"
 };
   
